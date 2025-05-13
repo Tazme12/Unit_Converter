@@ -29,5 +29,13 @@ while True:
         newresult = result + 32
         print(newresult,'°F')
 
+    elif (convert_from in ['kilometers', 'km']) and (convert_to in ['miles']):
+        result = amount * 0.621371
+        print(result,'miles')
+
+    elif (convert_from in ['miles']) and (convert_to in ['kilometers', 'km']):
+        result = amount / 0.621371
+        print(result,'km')
+
     else:
         print("Sorry, that unit is not available")
