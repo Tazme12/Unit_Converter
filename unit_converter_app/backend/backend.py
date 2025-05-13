@@ -19,7 +19,15 @@ while True:
         result = amount / 10
         print(result,'cm')
 
+    elif (convert_from in ['fahrenheit', 'f']) and (convert_to in ['celcius', 'c']):
+        result = amount - 32
+        newresult = result * 5 / 9
+        print(newresult,'°C')
 
+    elif (convert_from in ['celcius', 'c']) and (convert_to in ['fahrenheit', 'f']):
+        result = amount * 9 / 5
+        newresult = result + 32
+        print(newresult,'°F')
 
     else:
         print("Sorry, that unit is not available")
