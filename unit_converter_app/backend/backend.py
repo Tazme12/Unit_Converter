@@ -13,3 +13,7 @@ elif (convert_from in ['centimeters', 'cm']) and (convert_to in ['meters', 'm'])
 elif (convert_from in ['centimeter', 'cm']) and (convert_to in ['millimetre', 'mm']):
     result = amount * 10
     print(result,"mm")
+
+elif (convert_from in ['millimetre', 'mm']) and (convert_to in ['centimeter', 'cm']):
+    result = amount / 10
+    print(result,'cm')
