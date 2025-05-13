@@ -4,8 +4,12 @@ amount = int(input(f"Please enter the amount of {convert_from}: "))
 
 if (convert_from in ['meters', 'm']) and (convert_to in ['centimeters', 'cm']):
     result = amount * 100
-    print(result, "cm")
+    print(result,"cm")
 
 elif (convert_from in ['centimeters', 'cm']) and (convert_to in ['meters', 'm']):
     result = amount / 100
-    print(result, "m")
+    print(result,"m")
+
+elif (convert_from in ['centimeter', 'cm']) and (convert_to in ['millimetre', 'mm']):
+    result = amount * 10
+    print(result,"mm")
