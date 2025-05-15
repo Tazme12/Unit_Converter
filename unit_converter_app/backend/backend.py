@@ -37,5 +37,13 @@ while True:
         result = amount / 0.621371
         print(result,'km')
 
+    elif (convert_from in ['inches']) and (convert_to in ['feet', 'ft']):
+        result = amount / 12
+        print(result,'ft')
+
+    elif (convert_from in ['feet', 'ft']) and (convert_to in ['inches']):
+        result = amount * 12
+        print(result,'inches')
+
     else:
         print("Sorry, that unit is not available")
