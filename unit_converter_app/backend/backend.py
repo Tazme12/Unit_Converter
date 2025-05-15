@@ -45,5 +45,33 @@ while True:
         result = amount * 12
         print(result,'inches')
 
+    elif (convert_from in ['litre', 'l']) and (convert_to in ['pint']):
+        choice = input("Would you like UK or US pints?: ").lower()
+        if choice == 'us':
+            result = amount * 1.75975
+        elif choice == 'uk':
+            result = amount * 2.11338
+        else:
+            print("Please enter either US or Uk.")
+
+    elif (convert_from in ['pint']) and (convert_to in ['litre', 'l']):
+        choice = input("Would you like to UK or US pints?: ").lower()
+        if choice == 'us':
+            result = amount / 1.75975
+        elif choice == 'uk':
+            result = amount / 2.11338
+        else:
+            print("Please enter either US or Uk.")
+
+
     else:
         print("Sorry, that unit is not available")
+
+
+    # To convert between litres and pints:
+    # Litres to pints: Multiply by 1.75975 (for UK pints) or 2.11338 (for US pints).
+    # Equation: pints = litres × 1.75975 (UK) or litres × 2.11338 (US)
+    # Pints to litres: Divide by 1.75975 (for UK pints) or 2.11338 (for US pints).
+    # Equation: litres = pints ÷ 1.75975 (UK) or pints ÷ 2.11338 (US)
+
+    # Make sure to use the correct conversion factor depending on whether you're working with UK or US pints.
