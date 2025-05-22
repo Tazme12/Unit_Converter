@@ -66,12 +66,3 @@ while True:
 
     else:
         print("Sorry, that unit is not available")
-
-
-    # To convert between litres and pints:
-    # Litres to pints: Multiply by 1.75975 (for UK pints) or 2.11338 (for US pints).
-    # Equation: pints = litres × 1.75975 (UK) or litres × 2.11338 (US)
-    # Pints to litres: Divide by 1.75975 (for UK pints) or 2.11338 (for US pints).
-    # Equation: litres = pints ÷ 1.75975 (UK) or pints ÷ 2.11338 (US)
-
-    # Make sure to use the correct conversion factor depending on whether you're working with UK or US pints.
