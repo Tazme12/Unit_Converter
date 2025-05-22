@@ -1,7 +1,7 @@
 while True:
     convert_to = input("Please enter a unit to convert to: ").lower()
     convert_from = input("Please enter a unit to convert from: ").lower()
-    amount = int(input(f"Please enter the amount of {convert_from}: "))
+    amount = float(input(f"Please enter the amount of {convert_from}: "))
 
     if (convert_from in ['meters', 'm']) and (convert_to in ['centimeters', 'cm']):
         result = amount * 100
@@ -63,6 +63,14 @@ while True:
         else:
             print("Please enter either US or Uk.")
 
+    elif (convert_from in ['hour', 'hrs', 'hours', 'hr']) and (convert_to in ['minutes', 'mins', 'min']):
+        result = amount * 60
+        print(f"{result:.0f} mins")
+
+    elif (convert_from in ['minutes', 'mins', 'min']) and (convert_to in ['hours', 'hrs', 'hour', 'hr']):
+        result1 = amount // 60
+        remaining_mins = amount % 60
+        print(f"{result1} hr {remaining_mins} mins")
 
     else:
         print("Sorry, that unit is not available")
