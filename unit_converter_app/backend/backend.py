@@ -72,5 +72,13 @@ while True:
         remaining_mins = amount % 60
         print(f"{result1} hr {remaining_mins} mins")
 
+    elif (convert_from in ['litres', 'l']) and (convert_to in ['millilitres', 'ml']):
+        result = amount * 1000
+        print(result, 'ml')
+
+    elif (convert_from in ['millilitres', 'ml']) and (convert_to in ['litres', 'l']):
+        result = amount / 1000
+        print(result, 'litres')
+
     else:
         print("Sorry, that unit is not available")
