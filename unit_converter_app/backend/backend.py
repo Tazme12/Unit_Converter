@@ -1,84 +1,261 @@
-while True:
-    convert_to = input("Please enter a unit to convert to: ").lower()
-    convert_from = input("Please enter a unit to convert from: ").lower()
-    amount = float(input(f"Please enter the amount of {convert_from}: "))
+from flask import Flask, render_template, request
 
-    if (convert_from in ['meters', 'm']) and (convert_to in ['centimeters', 'cm']):
-        result = amount * 100
-        print(result,"cm")
+app = Flask(__name__)
 
-    elif (convert_from in ['centimeters', 'cm']) and (convert_to in ['meters', 'm']):
-        result = amount / 100
-        print(result,"m")
 
-    elif (convert_from in ['centimeter', 'cm']) and (convert_to in ['millimetre', 'mm']):
-        result = amount * 10
-        print(result,"mm")
+def convert_length(unit, unit_from, unit_to):
 
-    elif (convert_from in ['millimetre', 'mm']) and (convert_to in ['centimeter', 'cm']):
-        result = amount / 10
-        print(result,'cm')
+    length_conversions = {
+        "mm": 0.001,     
+        "cm": 0.01,        
+        "m": 1,          
+        "km": 1000,    
+        "in": 0.0254,     
+        "ft": 0.3048,     
+        "yd": 0.9144,   
+        "mi": 1609.34,
+     }
+    
+    length_in_meters = unit * length_conversions[unit_from]
+    converted_length = length_in_meters / length_conversions[unit_to]
 
-    elif (convert_from in ['fahrenheit', 'f']) and (convert_to in ['celcius', 'c']):
-        result = amount - 32
-        newresult = result * 5 / 9
-        print(newresult,'°C')
+    return converted_length
+    
 
-    elif (convert_from in ['celcius', 'c']) and (convert_to in ['fahrenheit', 'f']):
-        result = amount * 9 / 5
-        newresult = result + 32
-        print(newresult,'°F')
+def convert_temperature(unit, unit_from, unit_to):
+        if unit_from == unit_to:
+            return unit
 
-    elif (convert_from in ['kilometers', 'km']) and (convert_to in ['miles']):
-        result = amount * 0.621371
-        print(result,'miles')
+        if unit_from == "C":
+            celsius = unit
+        elif unit_from == "F":
+            celsius = (unit - 32) * 5 / 9
+        elif unit_from == "K":
+            celsius = unit - 273.15
 
-    elif (convert_from in ['miles']) and (convert_to in ['kilometers', 'km']):
-        result = amount / 0.621371
-        print(result,'km')
+        if unit_to == "C":
+            return celsius
+        elif unit_to == "F":
+            return (celsius * 9 / 5) + 32
+        elif unit_to == "K":
+            return celsius + 273.15
+        
+def convert_weight(unit, unit_from, unit_to):
 
-    elif (convert_from in ['inches']) and (convert_to in ['feet', 'ft']):
-        result = amount / 12
-        print(result,'ft')
+    weight_conversions = {
+        "mg": 0.001,       
+        "g": 1,            
+        "kg": 1000,         
+        "oz": 28.3495,    
+        "lbs": 453.592,    
+    }
 
-    elif (convert_from in ['feet', 'ft']) and (convert_to in ['inches']):
-        result = amount * 12
-        print(result,'inches')
+    weight_in_grams = unit * weight_conversions[unit_from]
+    converted_weight=  weight_in_grams / weight_conversions[unit_to]
 
-    elif (convert_from in ['litre', 'l']) and (convert_to in ['pint']):
-        choice = input("Would you like UK or US pints?: ").lower()
-        if choice == 'us':
-            result = amount * 1.75975
-        elif choice == 'uk':
-            result = amount * 2.11338
-        else:
-            print("Please enter either US or Uk.")
+    return converted_weight
 
-    elif (convert_from in ['pint']) and (convert_to in ['litre', 'l']):
-        choice = input("Would you like to UK or US pints?: ").lower()
-        if choice == 'us':
-            result = amount / 1.75975
-        elif choice == 'uk':
-            result = amount / 2.11338
-        else:
-            print("Please enter either US or Uk.")
 
-    elif (convert_from in ['hour', 'hrs', 'hours', 'hr']) and (convert_to in ['minutes', 'mins', 'min']):
-        result = amount * 60
-        print(f"{result:.0f} mins")
+@app.route("/")
 
-    elif (convert_from in ['minutes', 'mins', 'min']) and (convert_to in ['hours', 'hrs', 'hour', 'hr']):
-        result1 = amount // 60
-        remaining_mins = amount % 60
-        print(f"{result1} hr {remaining_mins} mins")
+def index():
+    return render_template("index.html")
 
-    elif (convert_from in ['litres', 'l']) and (convert_to in ['millilitres', 'ml']):
-        result = amount * 1000
-        print(result, 'ml')
+@app.route("/length", methods=["GET", "POST"])
 
-    elif (convert_from in ['millilitres', 'ml']) and (convert_to in ['litres', 'l']):
-        result = amount / 1000
-        print(result, 'litres')
+def length():
+    if request.method == "POST":
+        try:
+            unit = float(request.form["length"])
+            unit_from = request.form["unitFrom"]
+            unit_to = request.form["unitTo"]
 
+            print(f"Calculating conversion: {unit} {unit_from} to {unit_to}...")
+
+            converted_length = convert_length(unit, unit_from, unit_to)
+
+            return render_template("length.html", result = converted_length, unit_to = unit_to)
+        
+        except ValueError:
+            print("Form field empty")
+            return render_template("length.html", result = None)
+    
     else:
-        print("Sorry, that unit is not available")
+        return render_template("length.html", result = None)
+    
+@app.route("/temperature", methods=["GET", "POST"])
+
+def temperature():
+
+    if request.method == "POST":
+        try:
+            unit = float(request.form["temperature"])
+            unit_from = request.form["unitFrom"]
+            unit_to = request.form["unitTo"]
+
+            print(f"Calculating conversion: {unit} {unit_from} to {unit_to}...")
+
+            converted_temperature = convert_temperature(unit, unit_from, unit_to)
+
+            return render_template("temperature.html", result = converted_temperature, unit_to = unit_to)
+
+        except ValueError:
+            print("Form field empty")
+            return render_template("temperature.html", result = None)
+
+    return render_template("temperature.html", result = None)
+
+@app.route("/weight",methods=["GET", "POST"])
+
+def weight():
+
+    if request.method == "POST":
+        try:
+            unit = float(request.form["weight"])
+            unit_from = request.form["unitFrom"]
+            unit_to = request.form["unitTo"]
+
+            print(f"Calculating conversion: {unit} {unit_from} to {unit_to}...")
+
+            converted_weight = convert_weight(unit, unit_from, unit_to)
+
+            return render_template("weight.html", result = converted_weight, unit_to = unit_to)
+        
+        except ValueError:
+            print("Form field empty")
+            return render_template("weight.html", result = None)
+
+    return render_template("weight.html", result = None)
+
+if __name__ == "__main__":
+    app.run(debug=True);from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+
+def convert_length(unit, unit_from, unit_to):
+
+    length_conversions = {
+        "mm": 0.001,     
+        "cm": 0.01,        
+        "m": 1,          
+        "km": 1000,    
+        "in": 0.0254,     
+        "ft": 0.3048,     
+        "yd": 0.9144,   
+        "mi": 1609.34,
+     }
+    
+    length_in_meters = unit * length_conversions[unit_from]
+    converted_length = length_in_meters / length_conversions[unit_to]
+
+    return converted_length
+    
+
+def convert_temperature(unit, unit_from, unit_to):
+        if unit_from == unit_to:
+            return unit
+
+        if unit_from == "C":
+            celsius = unit
+        elif unit_from == "F":
+            celsius = (unit - 32) * 5 / 9
+        elif unit_from == "K":
+            celsius = unit - 273.15
+
+        if unit_to == "C":
+            return celsius
+        elif unit_to == "F":
+            return (celsius * 9 / 5) + 32
+        elif unit_to == "K":
+            return celsius + 273.15
+        
+def convert_weight(unit, unit_from, unit_to):
+
+    weight_conversions = {
+        "mg": 0.001,       
+        "g": 1,            
+        "kg": 1000,         
+        "oz": 28.3495,    
+        "lbs": 453.592,    
+    }
+
+    weight_in_grams = unit * weight_conversions[unit_from]
+    converted_weight=  weight_in_grams / weight_conversions[unit_to]
+
+    return converted_weight
+
+
+@app.route("/")
+
+def index():
+    return render_template("index.html")
+
+@app.route("/length", methods=["GET", "POST"])
+
+def length():
+    if request.method == "POST":
+        try:
+            unit = float(request.form["length"])
+            unit_from = request.form["unitFrom"]
+            unit_to = request.form["unitTo"]
+
+            print(f"Calculating conversion: {unit} {unit_from} to {unit_to}...")
+
+            converted_length = convert_length(unit, unit_from, unit_to)
+
+            return render_template("length.html", result = converted_length, unit_to = unit_to)
+        
+        except ValueError:
+            print("Form field empty")
+            return render_template("length.html", result = None)
+    
+    else:
+        return render_template("length.html", result = None)
+    
+@app.route("/temperature", methods=["GET", "POST"])
+
+def temperature():
+
+    if request.method == "POST":
+        try:
+            unit = float(request.form["temperature"])
+            unit_from = request.form["unitFrom"]
+            unit_to = request.form["unitTo"]
+
+            print(f"Calculating conversion: {unit} {unit_from} to {unit_to}...")
+
+            converted_temperature = convert_temperature(unit, unit_from, unit_to)
+
+            return render_template("temperature.html", result = converted_temperature, unit_to = unit_to)
+
+        except ValueError:
+            print("Form field empty")
+            return render_template("temperature.html", result = None)
+
+    return render_template("temperature.html", result = None)
+
+@app.route("/weight",methods=["GET", "POST"])
+
+def weight():
+
+    if request.method == "POST":
+        try:
+            unit = float(request.form["weight"])
+            unit_from = request.form["unitFrom"]
+            unit_to = request.form["unitTo"]
+
+            print(f"Calculating conversion: {unit} {unit_from} to {unit_to}...")
+
+            converted_weight = convert_weight(unit, unit_from, unit_to)
+
+            return render_template("weight.html", result = converted_weight, unit_to = unit_to)
+        
+        except ValueError:
+            print("Form field empty")
+            return render_template("weight.html", result = None)
+
+    return render_template("weight.html", result = None)
+
+if __name__ == "__main__":
+    app.run(debug=True)
