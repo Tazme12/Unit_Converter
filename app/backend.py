@@ -6,8 +6,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-if __name__ == "__main__":
-    app.run(debug = True)
+
 
 def convert_length(unit, unit_from, unit_to):
 
@@ -60,12 +59,6 @@ def convert_weight(unit, unit_from, unit_to):
     converted_weight=  weight_in_grams / weight_conversions[unit_to]
 
     return converted_weight
-
-
-@app.route("/")
-
-def index():
-    return render_template("index.html")
 
 @app.route("/length", methods=["GET", "POST"])
 
