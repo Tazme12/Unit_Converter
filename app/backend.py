@@ -257,4 +257,4 @@ def weight():
     return render_template("weight.html", result = None)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True) 
