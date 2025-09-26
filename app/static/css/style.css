@@ -1,0 +1,22 @@
+@keyframes rainbow {
+    0%   { color: rgb(255, 238, 0); }
+    25%  { color: rgb(0, 98, 128); }
+    50%  { color: rgb(255, 0, 247); }
+    75%  { color: rgb(255, 0, 0);}
+    100% { color: rgb(38, 203, 159); }
+}
+  
+length-btn:hover{
+    animation: rainbow 1.5s linear infinite;
+    cursor: pointer;
+}
+
+.button {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.rainbow animation{
+    color: rgb;
+}
